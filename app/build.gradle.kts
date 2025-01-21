@@ -17,23 +17,36 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "default"
+    productFlavors {
+        create("stagging") {
+            dimension = "default"
+            buildConfigField("String", "BASE_URL", "\"https://www.example_test.com/\"")
+            buildConfigField("String", "LOGIN_API", "\"https://www.example_test.com/login\"")
+            buildConfigField("String", "PROFILE_API", "\"https://www.example_test.com/profile\"")
+        }
+
+        create("production") {
+            dimension = "default"
+            buildConfigField("String", "BASE_URL", "\"https://www.example_live.com/\"")
+            buildConfigField("String", "LOGIN_API", "\"https://www.example_live.com/login\"")
+            buildConfigField("String", "PROFILE_API", "\"https://www.example_live.com/profile\"")
+        }
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
-            applicationIdSuffix = ".debug"  // Optional to differentiate debug build
-            buildConfigField("String", "BASE_URL", "\"https://www.example_test.com/\"")
         }
 
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://www.example_live.com/\"")
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -44,8 +57,8 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures{
-       buildConfig = true
+    buildFeatures {
+        buildConfig = true
     }
 }
 
